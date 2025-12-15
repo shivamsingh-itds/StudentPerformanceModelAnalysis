@@ -119,11 +119,33 @@ def data_preprocessing(df):
 
 
 # step 4 : Model Building
+from sklearn.linear_model import LinearRegression
+from sklearn.tree import DecisionTreeRegressor
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.metrics import r2_score
 def data_model(df):
-    # return model_name
-    pass
+    
+    model_comparison = []
 
+    models = {
+        "Linear Regression": LinearRegression(),
+        "Decision Tree Regressor": DecisionTreeRegressor(),
+        "Random Forest Regressor": RandomForestRegressor()
+    }
 
+    for model_name, model in models.items():
+        model.fit(X_train, y_train)
+        y_pred = model.predict(X_test)
+
+        r2score = r2_score(y_test, y_pred)
+
+        model_comparison.append({
+            "Model Name": model_name,
+            "R2 Score": r2score
+        })
+
+    model_comparison = pd.DataFrame(model_comparison)
+    return model_comparison
 
 
 # function calling 
@@ -133,13 +155,14 @@ num_stats, cat_stats , data_info = data_exploration(df)
 
 X_train ,X_test , y_train ,y_test = data_preprocessing(df)
 
-# model_name = data_model(df)
+model_comparsion = data_model(df)
 
 
 # Testing
 
-# print(df)
-# print(num_stats)
-# print(cat_stats)
-# print(data_info)
-# print(X_train)
+print(df)
+print(num_stats)
+print(cat_stats)
+print(data_info)
+print(X_train)
+print(model_comparsion)
